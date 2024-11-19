@@ -1,78 +1,39 @@
 package utils
 
 import (
+	"bufio"
 	"fmt"
-	"log"
+	"os"
+	"strconv"
+	"strings"
 
-	"github.com/charmbracelet/bubbles/textinput"
-	tea "github.com/charmbracelet/bubbletea"
+	"github.com/4Noyis/cli-pomodoro-app/ui"
 )
 
-func InputField() {
-	p := tea.NewProgram(initialModel())
+func InputField(headerText string) int {
+	const exitIndicator = -1
+	var inputValue int
 
-	p.Run()
-	if _, err := p.Run(); err != nil {
-		log.Fatal(err)
-	}
-}
+	for {
+		fmt.Print(headerText + "-->")
 
-type (
-	errMsg error
-)
+		reader := bufio.NewReader(os.Stdin)
+		line, _ := reader.ReadString('\n')
+		input := strings.TrimSpace(line)
 
-type model struct {
-	textInput textinput.Model
-	value     string
-	err       error
-}
-
-func initialModel() model {
-	ti := textinput.New()
-	ti.Placeholder = "Time for pomodoro"
-	ti.Focus()
-	ti.CharLimit = 156
-	ti.Width = 20
-
-	return model{
-		textInput: ti,
-		err:       nil,
-		value:     "",
-	}
-}
-
-func (m model) Init() tea.Cmd {
-	return textinput.Blink
-}
-
-func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
-	var cmd tea.Cmd
-
-	switch msg := msg.(type) {
-	case tea.KeyMsg:
-		switch msg.Type {
-		case tea.KeyEnter:
-			m.value = m.textInput.Value() // Capture the current value from the text input
-			fmt.Printf("Input value: %s\n", m.value)
-			return m, tea.Quit
-		case tea.KeyCtrlC, tea.KeyEsc:
-			return m, tea.Quit
+		if input == "b" {
+			ui.ClearScreen()
+			return exitIndicator
 		}
 
-	// We handle errors just like any other message
-	case errMsg:
-		m.err = msg
-		return m, nil
+		value, err := strconv.Atoi(input)
+		if err != nil {
+			fmt.Println("Please enter a valid input or type 'b' to quit")
+			continue
+		}
+
+		inputValue = value
+		break
 	}
-
-	m.textInput, cmd = m.textInput.Update(msg)
-	return m, cmd
-}
-
-func (m model) View() string {
-	return fmt.Sprintf(
-		"What’s your favorite Pokémon?\n\n%s\n\n%s",
-		m.textInput.View(),
-		"(esc to quit)",
-	) + "\n"
+	return inputValue
 }
