@@ -15,7 +15,7 @@ func InputField(headerText string) int {
 	var inputValue int
 
 	for {
-		fmt.Print(headerText + "-->")
+		fmt.Print(headerText + "--> ")
 
 		reader := bufio.NewReader(os.Stdin)
 		line, _ := reader.ReadString('\n')
