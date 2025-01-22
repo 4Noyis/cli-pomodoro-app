@@ -6,7 +6,7 @@ import (
 )
 
 func StartTimer(pomodoroTime int, fillSymbol string) int {
-	totalDuration := time.Duration(pomodoroTime) * time.Minute // Total duration // munite olcak !!!!!!!!!
+	totalDuration := time.Duration(pomodoroTime) * time.Second // Total duration // munite olcak !!!!!!!!!
 	totalSeconds := int(totalDuration.Seconds())
 	barWidth := 50 // Width of the progress bar
 

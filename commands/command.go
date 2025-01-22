@@ -75,11 +75,17 @@ func (cf *CmdFlags) Execute() {
 		os.Exit(1)
 	}
 
+	total_pomodoro_hour := total_pomodoro_time / 60
+	total_pomodoro_minute := total_pomodoro_time % 60
+
+	total_rest_hour := total_rest_time / 60
+	total_rest_minute := total_rest_time % 60
+
 	fmt.Printf("\n%s\n", utils.Repeat("=", 50))
 	fmt.Printf("%sWell Done!  \n", utils.Repeat(" ", 15))
 	fmt.Printf("%s\n", utils.Repeat("=", 50))
 	fmt.Printf("%sCompleted Pomodoros:  %d/%d\n", utils.Repeat(" ", 10), completedLoops, cf.LoopCount)
-	fmt.Printf("%sTotal Work Time:    %3dm\n", utils.Repeat(" ", 10), total_pomodoro_time)
-	fmt.Printf("%sTotal Break Time:   %3dm\n", utils.Repeat(" ", 10), total_rest_time)
+	fmt.Printf("%sTotal Work Time:    %02d:%02d\n", utils.Repeat(" ", 10), total_pomodoro_hour, total_pomodoro_minute)
+	fmt.Printf("%sTotal Break Time: %02d:%02d\n", utils.Repeat(" ", 10), total_rest_hour, total_rest_minute)
 	fmt.Printf("%s\n\n", utils.Repeat("=", 50))
 }
